@@ -1,7 +1,6 @@
 from langchain_ollama import ChatOllama, OllamaEmbeddings
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_community.vectorstores import Chroma
-from langchain_huggingface import HuggingFaceEmbeddings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.chains import create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
@@ -18,14 +17,13 @@ from fastapi.middleware.cors import CORSMiddleware
 load_dotenv()
 
 os.environ["LANGCHAIN_API_KEY"]= os.getenv("LANGCHAIN_API_KEY")
-os.environ['HUGGINGFACEHUB_API_TOKEN']= os.getenv("HUGGINGFACEHUB_API_TOKEN")
 os.environ["LANGCHAIN_TRACING_V2"]= "true"
 
 # Constantes
 CHUNK_SIZE = 1000
 CHUNK_OVERLAP = 200
 K_DOCUMENTS = 10
-EMBEDDING_MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
+EMBEDDING_MODEL_NAME = "nomic-embed-text"
 PDF_DIR = "./Sys"
 
 
@@ -77,9 +75,8 @@ def get_rag_summary(docs):
         print(f"Erreur dans get_rag_summary: {str(e)}")
         raise e
 
-# Créer les embeddings avec Sentence Transformers
-# embeddings = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL_NAME)
-embeddings = OllamaEmbeddings(model="nomic-embed-text")
+# Créer les embeddings avec Ollama Embeddings
+embeddings = OllamaEmbeddings(model=EMBEDDING_MODEL_NAME)
 docs, documents = process_documents()
 vectorstore = Chroma.from_documents(documents, embedding=embeddings)
 

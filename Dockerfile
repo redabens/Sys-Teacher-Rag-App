@@ -32,4 +32,5 @@ RUN chmod +x /init-ollama.sh
 EXPOSE 8000 8501
 
 # CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
-CMD ["honcho", "start"]
+# Exécuter init-ollama.sh puis démarrer les services
+CMD ["/bin/bash", "-c", "/init-ollama.sh && honcho start"]

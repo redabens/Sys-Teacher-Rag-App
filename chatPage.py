@@ -4,6 +4,29 @@ import requests
 # Interface Streamlit
 st.title("System Exploitation Teacher")
 
+def wait_for_fastapi():
+    """Attend que FastAPI soit prêt"""
+    st.info("Attente du démarrage de l'API...")
+    max_retries = 30
+    for i in range(max_retries):
+        try:
+            # Essayer de se connecter à FastAPI
+            response = requests.get("http://localhost:8000/health")
+            if response.status_code == 200:
+                st.success("API prête!")
+                return True
+        except requests.exceptions.ConnectionError:
+            if i < max_retries - 1:
+                time.sleep(2)  # Attendre 2 secondes entre chaque tentative
+                continue
+            else:
+                st.error("Impossible de se connecter à l'API")
+                return False
+
+# Attendre que FastAPI soit prêt
+if not wait_for_fastapi():
+    st.stop()
+
 # Initialisation du résumé RAG dans session_state
 if "rag_summary" not in st.session_state:
     response = requests.get("http://localhost:8000/get_rag_summary")

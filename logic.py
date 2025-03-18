@@ -156,6 +156,10 @@ async def chat(request: Request):
         return {"answer": response["answer"]}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+@app.get("/health")
+async def health_check():
+    return {"status": "ok"}
 
 
         

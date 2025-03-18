@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    volumes:
+      - ollama_data:/root/.ollama
+    ports:
+      - "11434:11434"
+    restart: unless-stopped
+
+  systeacher:
+    build: .
+    container_name: systeacher
+    depends_on:
+      - ollama
+    env_file:
+      - .env
+    volumes:
+      - ./Sys:/app/Sys
+    ports:
+      - "8000:8000"
+      - "8501:8501"
+    restart: unless-stopped
+
+volumes:
+  ollama_data:

@@ -25,6 +25,9 @@ COPY . .
 COPY init-ollama.sh /init-ollama.sh
 RUN chmod +x /init-ollama.sh
 
+# Créer le dossier logs
+RUN mkdir -p /app/logs
+
 # Configuration de supervisord
 # RUN mkdir -p /etc/supervisor/conf.d
 # COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf

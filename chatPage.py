@@ -1,5 +1,6 @@
 import streamlit as st
 import requests
+import time
 
 # Interface Streamlit
 st.title("System Exploitation Teacher")

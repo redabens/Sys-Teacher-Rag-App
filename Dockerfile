@@ -22,6 +22,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copie du reste du projet
 COPY . .
+COPY init-ollama.sh /init-ollama.sh
+RUN chmod +x /init-ollama.sh
 
 # Configuration de supervisord
 RUN mkdir -p /etc/supervisor/conf.d

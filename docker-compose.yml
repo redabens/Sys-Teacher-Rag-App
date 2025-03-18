@@ -9,12 +9,18 @@ services:
     ports:
       - "11434:11434"
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   systeacher:
     build: .
     container_name: systeacher
     depends_on:
-      - ollama
+      ollama:
+        condition: service_healthy
     env_file:
       - .env
     volumes:
